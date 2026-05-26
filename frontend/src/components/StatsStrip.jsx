@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const STAT_ITEMS = [
-  { key: 'open', label: 'Open', path: 'byStatus' },
-  { key: 'in_progress', label: 'In Progress', path: 'byStatus' },
-  { key: 'resolved', label: 'Resolved', path: 'byStatus' },
-  { key: 'closed', label: 'Closed', path: 'byStatus' },
-  { key: 'breached', label: 'SLA Breached', path: 'slaBreachedOpen' }
+  { key: "open", label: "Open", path: "byStatus" },
+  { key: "in_progress", label: "In Progress", path: "byStatus" },
+  { key: "resolved", label: "Resolved", path: "byStatus" },
+  { key: "closed", label: "Closed", path: "byStatus" },
+  { key: "breached", label: "SLA Breached", path: "slaBreachedOpen" },
 ];
 
 export default function StatsStrip({ refreshKey }) {
@@ -19,7 +19,7 @@ export default function StatsStrip({ refreshKey }) {
       try {
         setLoading(true);
         const res = await fetch(`${API_URL}/tickets/stats`);
-        if (!res.ok) throw new Error('Failed to fetch stats');
+        if (!res.ok) throw new Error("Failed to fetch stats");
         const data = await res.json();
         setStats(data);
       } catch {
@@ -50,7 +50,7 @@ export default function StatsStrip({ refreshKey }) {
     <div className="stats-strip" id="stats-strip">
       {STAT_ITEMS.map((item) => {
         const value =
-          item.path === 'slaBreachedOpen'
+          item.path === "slaBreachedOpen"
             ? stats.slaBreachedOpen
             : stats.byStatus[item.key];
         return (

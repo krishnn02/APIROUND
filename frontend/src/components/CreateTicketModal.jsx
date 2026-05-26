@@ -1,28 +1,28 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function CreateTicketModal({ onClose, onCreated }) {
   const [form, setForm] = useState({
-    subject: '',
-    description: '',
-    customerEmail: '',
-    priority: ''
+    subject: "",
+    description: "",
+    customerEmail: "",
+    priority: "",
   });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
-  const [apiError, setApiError] = useState('');
+  const [apiError, setApiError] = useState("");
 
   const validate = () => {
     const errs = {};
-    if (!form.subject.trim()) errs.subject = 'Subject is required';
-    if (!form.description.trim()) errs.description = 'Description is required';
+    if (!form.subject.trim()) errs.subject = "Subject is required";
+    if (!form.description.trim()) errs.description = "Description is required";
     if (!form.customerEmail.trim()) {
-      errs.customerEmail = 'Email is required';
+      errs.customerEmail = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.customerEmail)) {
-      errs.customerEmail = 'Please enter a valid email';
+      errs.customerEmail = "Please enter a valid email";
     }
-    if (!form.priority) errs.priority = 'Priority is required';
+    if (!form.priority) errs.priority = "Priority is required";
     return errs;
   };
 
@@ -40,7 +40,7 @@ export default function CreateTicketModal({ onClose, onCreated }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setApiError('');
+    setApiError("");
 
     const errs = validate();
     if (Object.keys(errs).length > 0) {
@@ -51,9 +51,9 @@ export default function CreateTicketModal({ onClose, onCreated }) {
     setSubmitting(true);
     try {
       const res = await fetch(`${API_URL}/tickets`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
       });
       const data = await res.json();
 
@@ -65,7 +65,7 @@ export default function CreateTicketModal({ onClose, onCreated }) {
           });
           setErrors(fieldErrors);
         } else {
-          setApiError(data.error || 'Failed to create ticket');
+          setApiError(data.error || "Failed to create ticket");
         }
         return;
       }
@@ -73,7 +73,7 @@ export default function CreateTicketModal({ onClose, onCreated }) {
       onCreated(data);
       onClose();
     } catch {
-      setApiError('Network error — could not reach server');
+      setApiError("Network error — could not reach server");
     } finally {
       setSubmitting(false);
     }
@@ -84,7 +84,11 @@ export default function CreateTicketModal({ onClose, onCreated }) {
   };
 
   return (
-    <div className="modal-overlay" onClick={handleOverlayClick} id="create-ticket-modal">
+    <div
+      className="modal-overlay"
+      onClick={handleOverlayClick}
+      id="create-ticket-modal"
+    >
       <div className="modal-content">
         <h2>Create New Ticket</h2>
 
@@ -99,10 +103,12 @@ export default function CreateTicketModal({ onClose, onCreated }) {
               name="subject"
               value={form.subject}
               onChange={handleChange}
-              className={errors.subject ? 'error' : ''}
+              className={errors.subject ? "error" : ""}
               placeholder="Brief summary of the issue"
             />
-            {errors.subject && <div className="field-error">{errors.subject}</div>}
+            {errors.subject && (
+              <div className="field-error">{errors.subject}</div>
+            )}
           </div>
 
           <div className="form-group">
@@ -112,10 +118,12 @@ export default function CreateTicketModal({ onClose, onCreated }) {
               name="description"
               value={form.description}
               onChange={handleChange}
-              className={errors.description ? 'error' : ''}
+              className={errors.description ? "error" : ""}
               placeholder="Describe the issue in detail"
             />
-            {errors.description && <div className="field-error">{errors.description}</div>}
+            {errors.description && (
+              <div className="field-error">{errors.description}</div>
+            )}
           </div>
 
           <div className="form-group">
@@ -126,10 +134,12 @@ export default function CreateTicketModal({ onClose, onCreated }) {
               name="customerEmail"
               value={form.customerEmail}
               onChange={handleChange}
-              className={errors.customerEmail ? 'error' : ''}
+              className={errors.customerEmail ? "error" : ""}
               placeholder="customer@example.com"
             />
-            {errors.customerEmail && <div className="field-error">{errors.customerEmail}</div>}
+            {errors.customerEmail && (
+              <div className="field-error">{errors.customerEmail}</div>
+            )}
           </div>
 
           <div className="form-group">
@@ -139,7 +149,7 @@ export default function CreateTicketModal({ onClose, onCreated }) {
               name="priority"
               value={form.priority}
               onChange={handleChange}
-              className={errors.priority ? 'error' : ''}
+              className={errors.priority ? "error" : ""}
             >
               <option value="">Select priority</option>
               <option value="low">Low</option>
@@ -147,7 +157,9 @@ export default function CreateTicketModal({ onClose, onCreated }) {
               <option value="high">High</option>
               <option value="urgent">Urgent</option>
             </select>
-            {errors.priority && <div className="field-error">{errors.priority}</div>}
+            {errors.priority && (
+              <div className="field-error">{errors.priority}</div>
+            )}
           </div>
 
           <div className="modal-actions">
@@ -155,7 +167,7 @@ export default function CreateTicketModal({ onClose, onCreated }) {
               Cancel
             </button>
             <button type="submit" className="btn-submit" disabled={submitting}>
-              {submitting ? 'Creating...' : 'Create Ticket'}
+              {submitting ? "Creating..." : "Create Ticket"}
             </button>
           </div>
         </form>

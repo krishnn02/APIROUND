@@ -1,20 +1,20 @@
-import { useState, useEffect, useCallback } from 'react';
-import StatsStrip from './components/StatsStrip';
-import FilterBar from './components/FilterBar';
-import Board from './components/Board';
-import CreateTicketModal from './components/CreateTicketModal';
-import './index.css';
+import { useState, useEffect, useCallback } from "react";
+import StatsStrip from "./components/StatsStrip";
+import FilterBar from "./components/FilterBar";
+import Board from "./components/Board";
+import CreateTicketModal from "./components/CreateTicketModal";
+import "./index.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function App() {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  const [priorityFilter, setPriorityFilter] = useState('');
+  const [priorityFilter, setPriorityFilter] = useState("");
   const [breachedOnly, setBreachedOnly] = useState(false);
 
   const [toast, setToast] = useState(null);
@@ -22,21 +22,21 @@ export default function App() {
   const fetchTickets = useCallback(async () => {
     try {
       setLoading(true);
-      setError('');
+      setError("");
 
       const params = new URLSearchParams();
-      if (priorityFilter) params.append('priority', priorityFilter);
-      if (breachedOnly) params.append('breached', 'true');
+      if (priorityFilter) params.append("priority", priorityFilter);
+      if (breachedOnly) params.append("breached", "true");
 
-      const query = params.toString() ? `?${params.toString()}` : '';
+      const query = params.toString() ? `?${params.toString()}` : "";
       const res = await fetch(`${API_URL}/tickets${query}`);
 
-      if (!res.ok) throw new Error('Failed to fetch tickets');
+      if (!res.ok) throw new Error("Failed to fetch tickets");
 
       const data = await res.json();
       setTickets(data);
     } catch (err) {
-      setError(err.message || 'Failed to load tickets');
+      setError(err.message || "Failed to load tickets");
     } finally {
       setLoading(false);
     }
@@ -52,11 +52,11 @@ export default function App() {
   };
 
   const handleTicketCreated = () => {
-    showToast('Ticket created successfully', 'success');
+    showToast("Ticket created successfully", "success");
     handleRefresh();
   };
 
-  const showToast = (message, type = 'error') => {
+  const showToast = (message, type = "error") => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
   };
@@ -94,7 +94,11 @@ export default function App() {
           <div className="loading-text">Loading tickets...</div>
         </div>
       ) : (
-        <Board tickets={tickets} onRefresh={handleRefresh} showToast={showToast} />
+        <Board
+          tickets={tickets}
+          onRefresh={handleRefresh}
+          showToast={showToast}
+        />
       )}
 
       {showModal && (
@@ -106,7 +110,7 @@ export default function App() {
 
       {toast && (
         <div className={`toast-notification ${toast.type}`}>
-          {toast.type === 'error' ? '⚠' : '✓'} {toast.message}
+          {toast.type === "error" ? "⚠" : "✓"} {toast.message}
         </div>
       )}
     </div>

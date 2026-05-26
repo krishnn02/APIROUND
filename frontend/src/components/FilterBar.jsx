@@ -1,4 +1,9 @@
-export default function FilterBar({ priority, onPriorityChange, breachedOnly, onBreachedChange }) {
+export default function FilterBar({
+  priority,
+  onPriorityChange,
+  breachedOnly,
+  onBreachedChange,
+}) {
   return (
     <div className="filter-bar" id="filter-bar">
       <label htmlFor="priority-filter">Priority:</label>

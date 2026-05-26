@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const TRANSITIONS = {
-  open: { forward: 'in_progress', backward: null },
-  in_progress: { forward: 'resolved', backward: 'open' },
-  resolved: { forward: 'closed', backward: 'in_progress' },
-  closed: { forward: null, backward: 'resolved' }
+  open: { forward: "in_progress", backward: null },
+  in_progress: { forward: "resolved", backward: "open" },
+  resolved: { forward: "closed", backward: "in_progress" },
+  closed: { forward: null, backward: "resolved" },
 };
 
 const STATUS_LABELS = {
-  open: 'Open',
-  in_progress: 'In Progress',
-  resolved: 'Resolved',
-  closed: 'Closed'
+  open: "Open",
+  in_progress: "In Progress",
+  resolved: "Resolved",
+  closed: "Closed",
 };
 
 function formatAge(ageMinutes) {
@@ -21,7 +21,12 @@ function formatAge(ageMinutes) {
   return `${mins}m`;
 }
 
-export default function TicketCard({ ticket, onTransition, onDelete, showToast }) {
+export default function TicketCard({
+  ticket,
+  onTransition,
+  onDelete,
+  showToast,
+}) {
   const [loading, setLoading] = useState(false);
 
   const transitions = TRANSITIONS[ticket.status];
@@ -31,7 +36,7 @@ export default function TicketCard({ ticket, onTransition, onDelete, showToast }
     try {
       await onTransition(ticket._id, newStatus);
     } catch (err) {
-      showToast(err.message || 'Transition failed');
+      showToast(err.message || "Transition failed");
     } finally {
       setLoading(false);
     }
@@ -42,21 +47,21 @@ export default function TicketCard({ ticket, onTransition, onDelete, showToast }
     try {
       await onDelete(ticket._id);
     } catch (err) {
-      showToast(err.message || 'Delete failed');
+      showToast(err.message || "Delete failed");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDragStart = (e) => {
-    e.dataTransfer.setData('ticketId', ticket._id);
-    e.dataTransfer.setData('currentStatus', ticket.status);
-    e.dataTransfer.effectAllowed = 'move';
-    e.currentTarget.classList.add('dragging');
+    e.dataTransfer.setData("ticketId", ticket._id);
+    e.dataTransfer.setData("currentStatus", ticket.status);
+    e.dataTransfer.effectAllowed = "move";
+    e.currentTarget.classList.add("dragging");
   };
 
   const handleDragEnd = (e) => {
-    e.currentTarget.classList.remove('dragging');
+    e.currentTarget.classList.remove("dragging");
   };
 
   return (
